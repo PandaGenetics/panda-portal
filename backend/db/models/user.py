@@ -25,5 +25,6 @@ class User(Base):
     
     # Relationships
     role = relationship("Role", back_populates="users")
+    datasets = relationship("Dataset", back_populates="uploader")
     analysis_jobs = relationship("AnalysisJob", back_populates="user")
     sessions = relationship("UserSession", back_populates="user")

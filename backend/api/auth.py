@@ -1,11 +1,12 @@
 """
 Authentication API endpoints
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+import bcrypt
+import hashlib
 from pydantic import EmailStr
 
 from config import settings
@@ -13,15 +14,20 @@ from db import get_db, User, Role, UserSession
 from schemas.auth import Token, LoginRequest, RegisterRequest, UserResponse
 
 router = APIRouter()
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
+
+
+def hash_token(token: str) -> str:
+    """Hash a token using SHA256 (for token storage)"""
+    return hashlib.sha256(token.encode()).hexdigest()
 
 
 def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
@@ -41,6 +47,42 @@ def decode_token(token: str) -> dict:
         return payload
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
+
+
+async def get_token_from_header(request: Request):
+    """Extract token from Authorization header"""
+    authorization = request.headers.get("Authorization")
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Missing authorization header")
+    
+    parts = authorization.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid authorization header format")
+    
+    return parts[1]
+
+
+async def auth_dependency(request: Request, db: Session = Depends(get_db)):
+    """Validate token and return payload"""
+    token = await get_token_from_header(request)
+    payload = decode_token(token)
+    
+    # Convert sub to int for database queries
+    if "sub" in payload:
+        payload["sub"] = int(payload["sub"])
+    
+    # Check if token is revoked
+    token_hash = hash_token(token)
+    session = db.query(UserSession).filter(
+        UserSession.token_hash == token_hash,
+        UserSession.revoked == False,
+        UserSession.expires_at > datetime.utcnow()
+    ).first()
+    
+    if not session:
+        raise HTTPException(status_code=401, detail="Token revoked or expired")
+    
+    return payload
 
 
 @router.post("/register", response_model=UserResponse)
@@ -73,7 +115,19 @@ async def register(request: RegisterRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user)
     
-    return user
+    # Return user with role_name
+    return {
+        "id": user.id,
+        "email": user.email,
+        "username": user.username,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "organization": user.organization,
+        "role_id": user.role_id,
+        "role_name": role.name,
+        "is_active": user.is_active,
+        "created_at": user.created_at,
+    }
 
 
 @router.post("/login", response_model=Token)
@@ -90,7 +144,7 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={
-            "sub": user.id,
+            "sub": str(user.id),
             "email": user.email,
             "role": user.role.name,
             "permissions": user.role.permissions
@@ -99,7 +153,7 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
     )
     
     # Store session (for logout/revocation)
-    token_hash = get_password_hash(access_token)
+    token_hash = hash_token(access_token)
     session = UserSession(
         user_id=user.id,
         token_hash=token_hash,
@@ -116,7 +170,7 @@ async def logout(token: str = Depends(auth_dependency), db: Session = Depends(ge
     """Logout and revoke token"""
     # Mark session as revoked
     session = db.query(UserSession).filter(
-        UserSession.token_hash == get_password_hash(token),
+        UserSession.token_hash == hash_token(token),
         UserSession.revoked == False
     ).first()
     
@@ -139,32 +193,59 @@ async def get_me(token: str = Depends(auth_dependency), db: Session = Depends(ge
     return user
 
 
-# Auth dependency helper
-async def auth_dependency(token: str = Depends(get_token_from_header)):
-    """Validate token and return payload"""
-    payload = decode_token(token)
+# ==================== Password Reset ====================
+
+@router.post("/password-reset-request")
+async def request_password_reset(
+    email: str,
+    db: Session = Depends(get_db)
+):
+    """Request a password reset email"""
+    user = db.query(User).filter(User.email == email).first()
     
-    # Check if token is revoked
-    token_hash = get_password_hash(token)
-    session = db.query(UserSession).filter(
-        UserSession.token_hash == token_hash,
-        UserSession.revoked == False,
-        UserSession.expires_at > datetime.utcnow()
-    ).first()
+    if not user:
+        # Don't reveal if user exists
+        return {"message": "If an account exists, a reset link will be sent"}
     
-    if not session:
-        raise HTTPException(status_code=401, detail="Token revoked or expired")
+    # Create reset token (valid for 1 hour)
+    reset_token = create_access_token(
+        data={"sub": str(user.id), "type": "password_reset"},
+        expires_delta=timedelta(hours=1)
+    )
     
-    return payload
+    # In production, send email here
+    # For demo, return the reset link
+    reset_link = f"http://localhost:3000/reset-password?token={reset_token}"
+    
+    return {
+        "message": "If an account exists, a reset link will be sent",
+        "demo_reset_link": reset_link  # Only for demo
+    }
 
 
-def get_token_from_header(authorization: str = None):
-    """Extract token from Authorization header"""
-    if not authorization:
-        raise HTTPException(status_code=401, detail="Missing authorization header")
-    
-    parts = authorization.split()
-    if len(parts) != 2 or parts[0].lower() != "bearer":
-        raise HTTPException(status_code=401, detail="Invalid authorization header format")
-    
-    return parts[1]
+@router.post("/password-reset/confirm")
+async def confirm_password_reset(
+    token: str,
+    new_password: str,
+    db: Session = Depends(get_db)
+):
+    """Reset password with valid token"""
+    try:
+        payload = decode_token(token)
+        if payload.get("type") != "password_reset":
+            raise HTTPException(status_code=400, detail="Invalid token type")
+        
+        user_id = int(payload.get("sub"))
+        user = db.query(User).filter(User.id == user_id).first()
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Update password
+        user.password_hash = get_password_hash(new_password)
+        db.commit()
+        
+        return {"message": "Password reset successfully"}
+        
+    except JWTError:
+        raise HTTPException(status_code=400, detail="Invalid or expired token")

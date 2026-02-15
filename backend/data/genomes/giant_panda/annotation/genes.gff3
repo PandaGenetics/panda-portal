@@ -1,0 +1,53 @@
+##gff-version 3
+##date 2024-01-15
+##source ASM200744v3
+##species Ailuropoda melanoleuca
+# Chromosome 1 genes
+NC_041780.1	ASM200744v3	gene	100	500	.	+	.	ID=gene0001;Name=BDNF;biotype=protein_coding;description=Brain-derived neurotrophic factor
+NC_041780.1	ASM200744v3	mRNA	100	500	.	+	.	ID=transcript0001;Parent=gene0001
+NC_041780.1	ASM200744v3	exon	100	200	.	+	.	ID=exon0001.1;Parent=transcript0001
+NC_041780.1	ASM200744v3	exon	300	400	.	+	.	ID=exon0001.2;Parent=transcript0001
+NC_041780.1	ASM200744v3	CDS	100	500	.	+	0	ID=cds0001;Parent=transcript0001;product=BDNF protein
+# Chromosome 2 genes
+NC_041781.1	ASM200744v3	gene	100	400	.	+	.	ID=gene0002;Name=FGF2;biotype=protein_coding;description=Fibroblast growth factor 2
+NC_041781.1	ASM200744v3	mRNA	100	400	.	+	.	ID=transcript0002;Parent=gene0002
+NC_041781.1	ASM200744v3	exon	100	250	.	+	.	ID=exon0002.1;Parent=transcript0002
+NC_041781.1	ASM200744v3	exon	300	400	.	+	.	ID=exon0002.2;Parent=transcript0002
+NC_041781.1	ASM200744v3	CDS	100	400	.	+	0	ID=cds0002;Parent=transcript0002;product=FGF2 protein
+# Chromosome 3 genes
+NC_041782.1	ASM200744v3	gene	150	450	.	-	.	ID=gene0003;Name=LEPR;biotype=protein_coding;description=Leptin receptor
+NC_041782.1	ASM200744v3	mRNA	150	450	.	-	.	ID=transcript0003;Parent=gene0003
+NC_041782.1	ASM200744v3	exon	150	300	.	-	.	ID=exon0003.1;Parent=transcript0003
+NC_041782.1	ASM200744v3	exon	350	450	.	-	.	ID=exon0003.2;Parent=transcript0003
+NC_041782.1	ASM200744v3	CDS	150	450	.	-	0	ID=cds0003;Parent=transcript0003;product=LEPR protein
+# Chromosome 4 genes
+NC_041783.1	ASM200744v3	gene	200	600	.	+	.	ID=gene0004;Name=GHRH;biotype=protein_coding;description=Growth hormone releasing hormone
+NC_041783.1	ASM200744v3	mRNA	200	600	.	+	.	ID=transcript0004;Parent=gene0004
+NC_041783.1	ASM200744v3	exon	200	350	.	+	.	ID=exon0004.1;Parent=transcript0004
+NC_041783.1	ASM200744v3	exon	400	500	.	+	.	ID=exon0004.2;Parent=transcript0004
+NC_041783.1	ASM200744v3	exon	550	600	.	+	.	ID=exon0004.3;Parent=transcript0004
+NC_041783.1	ASM200744v3	CDS	200	600	.	+	0	ID=cds0004;Parent=transcript0004;product=GHRH protein
+# Chromosome 5 genes
+NC_041784.1	ASM200744v3	gene	100	350	.	-	.	ID=gene0005;Name=GHRL;biotype=protein_coding;description=Ghrelin
+NC_041784.1	ASM200744v3	mRNA	100	350	.	-	.	ID=transcript0005;Parent=gene0005
+NC_041784.1	ASM200744v3	exon	100	200	.	-	.	ID=exon0005.1;Parent=transcript0005
+NC_041784.1	ASM200744v3	exon	250	350	.	-	.	ID=exon0005.2;Parent=transcript0005
+NC_041784.1	ASM200744v3	CDS	100	350	.	-	0	ID=cds0005;Parent=transcript0005;product=Ghrelin precursor
+# Chromosome 6 genes
+NC_041785.1	ASM200744v3	gene	180	480	.	+	.	ID=gene0006;Name=IGF1;biotype=protein_coding;description=Insulin-like growth factor 1
+NC_041785.1	ASM200744v3	mRNA	180	480	.	+	.	ID=transcript0006;Parent=gene0006
+NC_041785.1	ASM200744v3	exon	180	300	.	+	.	ID=exon0006.1;Parent=transcript0006
+NC_041785.1	ASM200744v3	exon	350	480	.	+	.	ID=exon0006.2;Parent=transcript0006
+NC_041785.1	ASM200744v3	CDS	180	480	.	+	0	ID=cds0006;Parent=transcript0006;product=IGF-1 precursor
+# Chromosome 7 genes
+NC_041786.1	ASM200744v3	gene	250	550	.	-	.	ID=gene0007;Name=DIO2;biotype=protein_coding;description=Type II iodothyronine deiodinase
+NC_041786.1	ASM200744v3	mRNA	250	550	.	-	.	ID=transcript0007;Parent=gene0007
+NC_041786.1	ASM200744v3	exon	250	400	.	-	.	ID=exon0007.1;Parent=transcript0007
+NC_041786.1	ASM200744v3	exon	450	550	.	-	.	ID=exon0007.2;Parent=transcript0007
+NC_041786.1	ASM200744v3	CDS	250	550	.	-	0	ID=cds0007;Parent=transcript0007;product=DIO2 enzyme
+# Chromosome 8 genes
+NC_041787.1	ASM200744v3	gene	100	380	.	+	.	ID=gene0008;Name=UCP1;biotype=protein_coding;description=Uncoupling protein 1
+NC_041787.1	ASM200744v3	mRNA	100	380	.	+	.	ID=transcript0008;Parent=gene0008
+NC_041787.1	ASM200744v3	exon	100	250	.	+	.	ID=exon0008.1;Parent=transcript0008
+NC_041787.1	ASM200744v3	exon	300	380	.	+	.	ID=exon0008.2;Parent=transcript0008
+NC_041787.1	ASM200744v3	CDS	100	380	.	+	0	ID=cds0008;Parent=transcript0008;product=UCP1 mitochondrial protein

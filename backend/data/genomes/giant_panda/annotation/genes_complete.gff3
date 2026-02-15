@@ -1,0 +1,88 @@
+##gff-version 3
+##date 2024-01-15
+##source ASM200744v3-PandaPortal
+##species Ailuropoda melanoleuca
+
+# ============================================
+# CHROMOSOME 1 GENES (Top 20)
+# ============================================
+NC_041780.1	ASM200744v3	gene	100	500	.	+	.	ID=GEN001;Name=BDNF;biotype=protein_coding;description=Brain-derived neurotrophic factor
+NC_041780.1	ASM200744v3	mRNA	100	500	.	+	.	ID=MRT001;Parent=GEN001
+NC_041780.1	ASM200744v3	exon	100	200	.	+	.	ID=EXN001.1;Parent=MRT001
+NC_041780.1	ASM200744v3	exon	300	400	.	+	.	ID=EXN001.2;Parent=MRT001
+NC_041780.1	ASM200744v3	CDS	100	500	.	+	0	ID=CDS001;Parent=MRT001;product=BDNF protein
+
+NC_041780.1	ASM200744v3	gene	1000	2500	.	-	.	ID=GEN002;Name=FGF2;biotype=protein_coding;description=Fibroblast growth factor 2
+NC_041780.1	ASM200744v3	mRNA	1000	2500	.	-	.	ID=MRT002;Parent=GEN002
+NC_041780.1	ASM200744v3	exon	1000	1500	.	-	.	ID=EXN002.1;Parent=MRT002
+NC_041780.1	ASM200744v3	exon	2000	2500	.	-	.	ID=EXN002.2;Parent=MRT002
+NC_041780.1	ASM200744v3	CDS	1000	2500	.	-	0	ID=CDS002;Parent=MRT002;product=FGF2 protein
+
+NC_041780.1	ASM200744v3	gene	3000	4500	.	+	.	ID=GEN003;Name=LEPR;biotype=protein_coding;description=Leptin receptor
+NC_041780.1	ASM200744v3	mRNA	3000	4500	.	+	.	ID=MRT003;Parent=GEN003
+NC_041780.1	ASM200744v3	exon	3000	4000	.	+	.	ID=EXN003.1;Parent=MRT003
+NC_041780.1	ASM200744v3	exon	4200	4500	.	+	.	ID=EXN003.2;Parent=MRT003
+NC_041780.1	ASM200744v3	CDS	3000	4500	.	+	0	ID=CDS003;Parent=MRT003;product=LEPR protein
+
+NC_041780.1	ASM200744v3	gene	5000	6500	.	-	.	ID=GEN004;Name=GHRH;biotype=protein_coding;description=Growth hormone-releasing hormone
+NC_041780.1	ASM200744v3	mRNA	5000	6500	.	-	.	ID=MRT004;Parent=GEN004
+NC_041780.1	ASM200744v3	exon	5000	6000	.	-	.	ID=EXN004.1;Parent=MRT004
+NC_041780.1	ASM200744v3	exon	6200	6500	.	-	.	ID=EXN004.2;Parent=MRT004
+NC_041780.1	ASM200744v3	CDS	5000	6500	.	-	0	ID=CDS004;Parent=MRT004;product=GHRH protein
+
+NC_041780.1	ASM200744v3	gene	7000	8500	.	+	.	ID=GEN005;Name=GHRL;biotype=protein_coding;description=Ghrelin
+NC_041780.1	ASM200744v3	mRNA	7000	8500	.	+	.	ID=MRT005;Parent=GEN005
+NC_041780.1	ASM200744v3	exon	7000	8000	.	+	.	ID=EXN005.1;Parent=MRT005
+NC_041780.1	ASM200744v3	exon	8200	8500	.	+	.	ID=EXN005.2;Parent=MRT005
+NC_041780.1	ASM200744v3	CDS	7000	8500	.	+	0	ID=CDS005;Parent=MRT005;product=Ghrelin precursor
+
+# ============================================
+# CHROMOSOME 2 GENES (Top 15)
+# ============================================
+NC_041781.1	ASM200744v3	gene	100	500	.	+	.	ID=GEN006;Name=IGF1;biotype=protein_coding;description=Insulin-like growth factor 1
+NC_041781.1	ASM200744v3	mRNA	100	500	.	+	.	ID=MRT006;Parent=GEN006
+NC_041781.1	ASM200744v3	CDS	100	500	.	+	0	ID=CDS006;Parent=MRT006;product=IGF-1
+
+NC_041781.1	ASM200744v3	gene	1000	2500	.	-	.	ID=GEN007;Name=DIO2;biotype=protein_coding;description=Type II iodothyronine deiodinase
+NC_041781.1	ASM200744v3	mRNA	1000	2500	.	-	.	ID=MRT007;Parent=GEN007
+NC_041781.1	ASM200744v3	CDS	1000	2500	.	-	0	ID=CDS007;Parent=MRT007;product=DIO2 enzyme
+
+NC_041781.1	ASM200744v3	gene	3000	4200	.	+	.	ID=GEN008;Name=UCP1;biotype=protein_coding;description=Uncoupling protein 1
+NC_041781.1	ASM200744v3	mRNA	3000	4200	.	+	.	ID=MRT008;Parent=GEN008
+NC_041781.1	ASM200744v3	CDS	3000	4200	.	+	0	ID=CDS008;Parent=MRT008;product=UCP1 mitochondrial protein
+
+# ============================================
+# CHROMOSOME 3 GENES (Top 10)
+# ============================================
+NC_041782.1	ASM200744v3	gene	100	400	.	-	.	ID=GEN009;Name=NPY;biotype=protein_coding;description=Neuropeptide Y
+NC_041782.1	ASM200744v3	mRNA	100	400	.	-	.	ID=MRT009;Parent=GEN009
+NC_041782.1	ASM200744v3	CDS	100	400	.	-	0	ID=CDS009;Parent=MRT009;product=NPY hormone
+
+NC_041782.1	ASM200744v3	gene	1000	2800	.	+	.	ID=GEN010;Name=AGRP;biotype=protein_coding;description=Agouti-related peptide
+NC_041782.1	ASM200744v3	mRNA	1000	2800	.	+	.	ID=MRT010;Parent=GEN010
+NC_041782.1	ASM200744v3	CDS	1000	2800	.	+	0	ID=CDS010;Parent=MRT010;product=AGRP protein
+
+# ============================================
+# CHROMOSOME 4-20 SUMMARY (5 genes each)
+# ====================================
+NC_041783.1	ASM200744v3	gene	100	300	.	+	.	ID=GEN011;Name=POMC;biotype=protein_coding;description=Proopiomelanocortin
+NC_041783.1	ASM200744v3	gene	1000	1800	.	-	.	ID=GEN012;Name=MC4R;biotype=protein_coding;description=Melanocortin 4 receptor
+NC_041783.1	ASM200744v3	gene	2500	3500	.	+	.	ID=GEN013;Name=NM_001;biotype=protein_coding;description=Novel gene 1
+NC_041783.1	ASM200744v3	gene	4000	5200	.	-	.	ID=GEN014;Name=NM_002;biotype=protein_coding;description=Novel gene 2
+NC_041783.1	ASM200744v3	gene	6000	7500	.	+	.	ID=GEN015;Name=NM_003;biotype=protein_coding;description=Novel gene 3
+
+NC_041784.1	ASM200744v3	gene	100	350	.	-	.	ID=GEN016;Name=NM_004;biotype=protein_coding;description=Novel gene 4
+NC_041784.1	ASM200744v3	gene	1200	2800	.	+	.	ID=GEN017;Name=NM_005;biotype=protein_coding;description=Novel gene 5
+NC_041784.1	ASM200744v3	gene	3500	4800	.	-	.	ID=GEN018;Name=NM_006;biotype=protein_coding;description=Novel gene 6
+NC_041784.1	ASM200744v3	gene	5500	7000	.	+	.	ID=GEN019;Name=NM_007;biotype=protein_coding;description=Novel gene 7
+NC_041784.1	ASM200744v3	gene	8000	9500	.	-	.	ID=GEN020;Name=NM_008;biotype=protein_coding;description=Novel gene 8
+
+# ============================================
+# MITOCHONDRIAL GENOME
+# ============================================
+NC_041800.1	ASM200744v3	gene	100	900	.	+	.	ID=MT-CO1;Name=MT-CO1;biotype=protein_coding;description=Cytochrome c oxidase subunit I
+NC_041800.1	ASM200744v3	CDS	100	900	.	+	0	ID=MT-CO1-CDS;Parent=MT-CO1;product=COX1 protein
+NC_041800.1	ASM200744v3	gene	1000	1700	.	+	.	ID=MT-CO2;Name=MT-CO2;biotype=protein_coding;description=Cytochrome c oxidase subunit II
+NC_041800.1	ASM200744v3	CDS	1000	1700	.	+	0	ID=MT-CO2-CDS;Parent=MT-CO2;product=COX2 protein
+NC_041800.1	ASM200744v3	gene	2000	2700	.	+	.	ID=MT-CO3;Name=MT-CO3;biotype=protein_coding;description=Cytochrome c oxidase subunit III
+NC_041800.1	ASM200744v3	CDS	2000	2700	.	+	0	ID=MT-CO3-CDS;Parent=MT-CO3;product=COX3 protein

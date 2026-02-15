@@ -1,27 +1,36 @@
-"""
-Genome browser page with IGV.js
-"""
-import { useEffect, useRef, useState } from 'react';
+/**
+ * Genome browser page with JBrowse2 - Full Integration
+ */
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-// Dynamic import for IGV.js (client-side only)
+// Dynamic import for JBrowse2 (client-side only)
 const LinearGenomeView = dynamic(
   () => import('@jbrowse/react-linear-genome-view').then((mod) => mod.LinearGenomeView),
   { ssr: false }
 );
 
+interface GenomeRef {
+  id: string;
+  name: string;
+  description: string;
+  fasta_url: string;
+  fai_url?: string;
+  gff_url?: string;
+}
+
 export default function GenomeBrowser() {
   const [species, setSpecies] = useState('giant_panda');
-  const [refGenome, setRefGenome] = useState('');
-  const [tracks, setTracks] = useState<any[]>([]);
+  const [refGenome, setRefGenome] = useState<GenomeRef | null>(null);
   const [loading, setLoading] = useState(true);
   const [jbrowseConfig, setJbrowseConfig] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const speciesList = [
-    { id: 'giant_panda', name: 'Giant Panda (Ailuropoda melanoleuca)' },
+    { id: 'giant_panda', name: 'Giant Panda (Ailuropoda melanoleuca) ASM200744v3' },
     { id: 'snow_leopard', name: 'Snow Leopard (Panthera uncia)' },
   ];
 
@@ -31,41 +40,62 @@ export default function GenomeBrowser() {
 
   const loadGenomeConfig = async () => {
     setLoading(true);
+    setError(null);
     try {
-      // Load reference genome
-      const refResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/genome/${species}/refs`
-      );
-      const refs = await refResponse.json();
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       
-      if (refs.data && refs.data.length > 0) {
-        const defaultRef = refs.data[0];
-        setRefGenome(defaultRef);
+      // Load reference genome config
+      const refResponse = await fetch(`${apiUrl}/api/genome/${species}/refs`);
+      const data = await refResponse.json();
+      
+      if (data && Array.isArray(data) && data.length > 0) {
+        const ref = data[0] as GenomeRef;
+        setRefGenome(ref);
         
-        // Set up JBrowse2 config
-        setJbrowseConfig({
+        // Build absolute URLs
+        const fastaUrl = `${apiUrl}${ref.fasta_url}`;
+        const faiUrl = ref.fai_url ? `${apiUrl}${ref.fai_url}` : `${fastaUrl}.fai`;
+        
+        // Set up JBrowse2 config with IndexedFastaAdapter
+        const config = {
           assembly: {
-            name: defaultRef.name,
+            name: ref.name,
             sequence: {
               trackId: 'reference',
-              ...defaultRef,
+              type: 'ReferenceSequenceTrack',
+              adapter: {
+                type: 'IndexedFastaAdapter',
+                fasta: { url: fastaUrl },
+                fai: { url: faiUrl },
+              },
             },
           },
           tracks: [
             {
-              trackId: 'reference',
+              trackId: 'reference-track',
               name: 'Reference Sequence',
               type: 'ReferenceSequenceTrack',
               adapter: {
-                type: 'TwoBitUriAdapter',
-                twoBitUri: defaultRef.fasta_url,
+                type: 'IndexedFastaAdapter',
+                fasta: { url: fastaUrl },
+                fai: { url: faiUrl },
               },
             },
           ],
-        });
+          defaultSession: {
+            name: `${ref.name} Overview`,
+            view: {
+              type: 'LinearGenomeView',
+              tracks: ['reference-track'],
+            },
+          },
+        };
+        
+        setJbrowseConfig(config);
       }
-    } catch (error) {
-      console.error('Error loading genome config:', error);
+    } catch (err) {
+      console.error('Error loading genome:', err);
+      setError('Failed to load genome configuration');
     }
     setLoading(false);
   };
@@ -85,7 +115,7 @@ export default function GenomeBrowser() {
 
             {/* Species selector */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-              <div className="flex items-center space-x-4 mb-4">
+              <div className="flex items-center space-x-4 mb-6">
                 <label className="font-medium text-gray-700">Species:</label>
                 <select
                   value={species}
@@ -100,35 +130,68 @@ export default function GenomeBrowser() {
                 </select>
               </div>
 
-              {loading ? (
+              {loading && (
                 <div className="flex items-center justify-center h-96">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-panda-accent"></div>
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-panda-accent mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading genome data...</p>
+                  </div>
                 </div>
-              ) : jbrowseConfig ? (
-                <div className="border rounded-lg overflow-hidden">
+              )}
+
+              {error && (
+                <div className="flex items-center justify-center h-96 text-red-500">
+                  <div className="text-center">
+                    <p className="text-xl mb-2">⚠️</p>
+                    <p>{error}</p>
+                  </div>
+                </div>
+              )}
+
+              {!loading && !error && jbrowseConfig && (
+                <div className="border rounded-lg overflow-hidden" style={{ height: '600px' }}>
                   <LinearGenomeView
                     configuration={jbrowseConfig}
                     tracks={jbrowseConfig.tracks}
                   />
                 </div>
-              ) : (
+              )}
+
+              {!loading && !error && !jbrowseConfig && (
                 <div className="flex items-center justify-center h-96 text-gray-500">
-                  No genome data available for this species
+                  <div className="text-center">
+                    <p className="text-xl mb-2">🐼</p>
+                    <p>No genome data available</p>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Help text */}
+            {/* Genome Info */}
+            {refGenome && (
+              <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 className="text-lg font-semibold mb-4">📋 Genome Information</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-gray-600">Reference</p>
+                    <p className="font-medium">{refGenome.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Description</p>
+                    <p className="font-medium">{refGenome.description}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Help */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="font-semibold text-blue-800 mb-2">
-                📖 Using the Genome Browser
-              </h3>
+              <h3 className="font-semibold text-blue-800 mb-2">📖 Using JBrowse2</h3>
               <ul className="text-blue-700 space-y-2">
-                <li>• Select a species from the dropdown above</li>
-                <li>• Zoom in/out using the mouse wheel or controls</li>
+                <li>• Select a species from the dropdown</li>
+                <li>• Click and drag to pan across the genome</li>
+                <li>• Use scroll wheel or controls to zoom</li>
                 <li>• Click on features to see details</li>
-                <li>• Drag to pan across the genome</li>
-                <li>• Use the track selector to add/remove tracks</li>
               </ul>
             </div>
           </div>

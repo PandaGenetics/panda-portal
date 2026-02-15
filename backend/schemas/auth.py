@@ -32,7 +32,8 @@ class UserResponse(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     organization: Optional[str]
-    role_name: str
+    role_id: int
+    role_name: Optional[str] = None
     is_active: bool
     created_at: datetime
     

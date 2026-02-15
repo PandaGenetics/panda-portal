@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     # Genome data
     GENOME_DATA_DIR: str = "./data/genomes"
     
+    # BLAST
+    BLAST_DB_PATH: str = "./data/blast"
+    TEMP_DIR: str = "./data/tmp"
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

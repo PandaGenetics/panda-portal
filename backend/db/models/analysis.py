@@ -2,7 +2,7 @@
 Analysis job database model
 """
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, JSON, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, JSON, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from db.connection import Base
 

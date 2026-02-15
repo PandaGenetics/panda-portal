@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from db import get_db, PedigreeRecord
+from api.auth import auth_dependency
 
 router = APIRouter()
 

@@ -19,7 +19,7 @@ class Dataset(Base):
     file_size = Column(BigInteger)
     access_level = Column(String(50), default="registered")  # public, registered, researcher, collaborator
     uploaded_by = Column(Integer, ForeignKey("users.id"))
-    metadata = Column(JSON, default=dict)
+    meta_data = Column(JSON, default=dict)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     

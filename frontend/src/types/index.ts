@@ -1,6 +1,6 @@
-"""
-TypeScript type definitions
-"""
+/**
+ * TypeScript type definitions
+ */
 
 // User types
 export interface User {

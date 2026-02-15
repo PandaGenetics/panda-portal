@@ -18,9 +18,9 @@ export default function Home() {
     {
       icon: '🧬',
       title: 'Genome Browser',
-      description: 'Explore panda genomes with our interactive JBrowse2 visualization platform. Navigate chromosomes, zoom to genes, and analyze genomic features.',
+      description: 'Explore panda genomes with JBrowse2 or IGV. Two powerful visualization tools with smooth navigation, zoom, and feature search.',
       href: '/genome-browser',
-      color: 'from-blue-500 to-blue-700',
+      color: 'from-blue-500 to-indigo-600',
       shadow: 'shadow-blue-500/30',
     },
     {
@@ -46,6 +46,14 @@ export default function Home() {
       href: '/pedigree',
       color: 'from-orange-500 to-orange-700',
       shadow: 'shadow-orange-500/30',
+    },
+    {
+      icon: '📈',
+      title: 'Statistics',
+      description: 'Comprehensive platform usage statistics, genome coverage, and research metrics.',
+      href: '/stats',
+      color: 'from-red-500 to-red-700',
+      shadow: 'shadow-red-500/30',
     },
   ];
 

@@ -25,25 +25,17 @@ async def list_references(species: str):
     if species == "giant_panda":
         return [
             {
-                "id": "ASM200744v3_complete",
-                "name": "ASM200744v3 (Complete)",
-                "description": f"Giant Panda Reference Genome ASM200744v3 - Full chromosome set",
-                "fasta_url": f"/api/files/genome/{species}/reference/ASM200744v3_complete.fa",
-                "fai_url": f"/api/files/genome/{species}/reference/ASM200744v3_complete.fa.fai",
-                "gff_url": f"/api/files/genome/{species}/annotation/genes_complete.gff3",
-                "chromosomes": 21,
-                "total_length": "22.4 Gb",
-            },
-            {
-                "id": "ASM200744v3",
-                "name": "ASM200744v3 (Test)",
-                "description": f"Giant Panda Reference Genome Assembly ASM200744v3 (Test Data - 8 chromosomes)",
-                "fasta_url": f"/api/files/genome/{species}/reference/ASM200744v3.fa",
-                "fai_url": f"/api/files/genome/{species}/reference/ASM200744v3.fa.fai",
+                "id": "ASM200744v3_real",
+                "name": "ASM200744v3 (Real Test Data)",
+                "description": "Giant Panda Reference Genome ASM200744v3 - Test data with representative sequences",
+                "fasta_url": f"/api/files/genome/{species}/reference/ASM200744v3_genomic.fna",
+                "fai_url": f"/api/files/genome/{species}/reference/ASM200744v3_genomic.fna.fai",
                 "gff_url": f"/api/files/genome/{species}/annotation/genes.gff3",
-                "chromosomes": 8,
-                "total_length": "8.4 Kb",
-            }
+                "chromosomes": 22,
+                "total_length": "30.5 Mb (sample)",
+                "genes": 47140,
+                "data_source": "Test data based on ASM200744v3",
+            },
         ]
     return [
         {
